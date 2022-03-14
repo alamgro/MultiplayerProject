@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[SelectionBase]
 public class Player : MonoBehaviour, IDamageable
 {
     [Header("Basic attributes")]
@@ -85,7 +86,8 @@ public class Player : MonoBehaviour, IDamageable
         else
         {
             //Look at where the player is walking to
-            transform.localScale = new Vector3(Mathf.Sign(moveDirection.x), transform.localScale.y, transform.localScale.z);
+            if(moveDirection.x != 0f)
+                transform.localScale = new Vector3(Mathf.Sign(moveDirection.x), transform.localScale.y, transform.localScale.z);
         }
         #endregion
 

@@ -119,6 +119,7 @@ public class Soldier : MonoBehaviour, IDamageable
 
     private void Die()
     {
+        GameManager.Instance.EnemiesKilled += 1;
         Destroy(gameObject);
     }
 }

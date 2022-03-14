@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     private Player playerInstance;
 
     public Player PlayerInstance => playerInstance;
+    public int EnemiesKilled { get => enemiesKilled; set => enemiesKilled = value; }
+
+    private int enemiesKilled = 0;
 
     void Awake()
     {
