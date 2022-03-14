@@ -9,6 +9,7 @@ public class Soldier : MonoBehaviour, IDamageable
     [SerializeField] private float baseMovementSpeed;
     [SerializeField] private float walkingTime; //Minimum time that the enemy will walk towards the player
     [SerializeField] private int hp;
+    [SerializeField] private int pointsValue;
     [Header("Attack attributes")]
     [SerializeField] private float attackRangeDistance;
     [SerializeField] private float attackCooldown;
@@ -20,7 +21,7 @@ public class Soldier : MonoBehaviour, IDamageable
 
     private Rigidbody2D rigidB;
     private Player playerInstance;
-    private Vector2 vectorToPlayer;
+    private Vector3 vectorToPlayer;
     private float attackCurrentCooldown = 0f;
     private float currentMovementSpeed;
     private bool isReadyToAttack;
@@ -97,12 +98,13 @@ public class Soldier : MonoBehaviour, IDamageable
     {
         attackCurrentCooldown = attackCooldown + attackCastingDelay;
         currentMovementSpeed = 0f;
+        Vector3 spawnPosition = attackOriginPoint.position + (vectorToPlayer * 0.5f);
 
         yield return new WaitForSecondsRealtime(attackCastingDelay);
         //print("Attack!!!");
         Projectile projectile = Instantiate(pfbProjectile, transform.localPosition, pfbProjectile.transform.rotation).GetComponent<Projectile>();
         //projectile.Init(vectorToPlayer.normalized, projectileSpeed, gameObject.layer);
-        projectile.Init( transform.position, vectorToPlayer.normalized, projectileSpeed, LayerMask.NameToLayer(GameConstants.Layer.enemyProjectile));
+        projectile.Init(spawnPosition, vectorToPlayer.normalized, projectileSpeed, LayerMask.NameToLayer(GameConstants.Layer.enemyProjectile));
     }
 
     void IDamageable.TakeDamage(int _damage)

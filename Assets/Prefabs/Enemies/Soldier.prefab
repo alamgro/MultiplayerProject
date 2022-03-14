@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 596026306}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.4, z: 0}
+  m_LocalPosition: {x: 0.25, y: 2.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 9094370394695634203}
@@ -1701,12 +1701,12 @@ MonoBehaviour:
   baseMovementSpeed: 3
   walkingTime: 0.5
   hp: 1
-  attackRangeDistance: 10
+  attackRangeDistance: 15
   attackCooldown: 1
   attackCastingDelay: 0.5
   attackOriginPoint: {fileID: 596026307}
   projectileSpeed: 4
-  pfbProjectile: {fileID: 7302094681966353782, guid: 1aab3ec643747c64985a3c8120d21083, type: 3}
+  pfbProjectile: {fileID: 7302094681966353782, guid: 8b559fc7994a7884ab330aa4b26d5454, type: 3}
 --- !u!50 &3723445172955294575
 Rigidbody2D:
   serializedVersion: 4
