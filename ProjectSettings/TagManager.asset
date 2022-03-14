@@ -11,11 +11,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Ally
+  - Player
+  - Enemy
+  - EnemyProjectile
+  - SpawnZone
   - 
   - 
   - 
