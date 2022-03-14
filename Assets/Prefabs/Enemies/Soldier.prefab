@@ -1701,11 +1701,12 @@ MonoBehaviour:
   baseMovementSpeed: 3
   walkingTime: 0.5
   hp: 1
-  attackRangeDistance: 15
+  pointsValue: 6
+  attackRangeDistance: 20
   attackCooldown: 1
   attackCastingDelay: 0.5
   attackOriginPoint: {fileID: 596026307}
-  projectileSpeed: 4
+  projectileSpeed: 7
   pfbProjectile: {fileID: 7302094681966353782, guid: 8b559fc7994a7884ab330aa4b26d5454, type: 3}
 --- !u!50 &3723445172955294575
 Rigidbody2D:

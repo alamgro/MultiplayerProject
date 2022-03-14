@@ -103,6 +103,9 @@ public class Player : MonoBehaviour, IDamageable
     {
         //Die();
         Debug.Log("Die");
+
+        //QUIERO CAMBIAR ESTO AL FINAL DEL NIVEL (UNA SOLA ACTUALIZACIÓN AL FINAL, Y NO UNA POR MUERTE)
+        PlayfabManager.Instance.UpdateDeaths(); 
     }
 
     private Projectile ShootProjectile()

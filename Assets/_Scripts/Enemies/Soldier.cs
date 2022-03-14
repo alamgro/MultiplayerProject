@@ -9,7 +9,7 @@ public class Soldier : MonoBehaviour, IDamageable
     [SerializeField] private float baseMovementSpeed;
     [SerializeField] private float walkingTime; //Minimum time that the enemy will walk towards the player
     [SerializeField] private int hp;
-    [SerializeField] private int pointsValue;
+    [SerializeField] private int pointsValue; //Amount of points given for killing it
     [Header("Attack attributes")]
     [SerializeField] private float attackRangeDistance;
     [SerializeField] private float attackCooldown;
@@ -38,7 +38,7 @@ public class Soldier : MonoBehaviour, IDamageable
     
     void Update()
     {
-        vectorToPlayer = playerInstance.transform.position - transform.position;
+        vectorToPlayer = playerInstance.GetComponent<Collider2D>().bounds.center - attackOriginPoint.position;
         
         rigidB.velocity = Vector3.up * rigidB.velocity.y;
 
@@ -98,12 +98,11 @@ public class Soldier : MonoBehaviour, IDamageable
     {
         attackCurrentCooldown = attackCooldown + attackCastingDelay;
         currentMovementSpeed = 0f;
-        Vector3 spawnPosition = attackOriginPoint.position + (vectorToPlayer * 0.5f);
+        Vector3 spawnPosition = attackOriginPoint.position + (vectorToPlayer.normalized * 0.5f);
 
         yield return new WaitForSecondsRealtime(attackCastingDelay);
         //print("Attack!!!");
         Projectile projectile = Instantiate(pfbProjectile, transform.localPosition, pfbProjectile.transform.rotation).GetComponent<Projectile>();
-        //projectile.Init(vectorToPlayer.normalized, projectileSpeed, gameObject.layer);
         projectile.Init(spawnPosition, vectorToPlayer.normalized, projectileSpeed, LayerMask.NameToLayer(GameConstants.Layer.enemyProjectile));
     }
 
@@ -121,7 +120,8 @@ public class Soldier : MonoBehaviour, IDamageable
 
     private void Die()
     {
-        GameManager.Instance.EnemiesKilled += 1;
+        GameManager.Instance.LevelKills += 1;
+        GameManager.Instance.LevelPoints += pointsValue;
         Destroy(gameObject);
     }
 }

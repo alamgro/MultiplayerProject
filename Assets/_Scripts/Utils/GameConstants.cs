@@ -21,4 +21,11 @@ public static class GameConstants
         public const string ally = "Ally";
         public const string spawnZone = "SpawnZone";
     }
+
+    public static class Scene
+    {
+        public const string game = "Game";
+        public const string mainMenu = "MainMenu";
+
+    }
 }

@@ -50,7 +50,13 @@ public class Projectile : MonoBehaviour
         AttackDamage = 1;
 
         //This should be the layer of the object that is calling this function. This way it will ignore its own collider.
-        gameObject.layer = _layerOfShooterObject; 
+        gameObject.layer = _layerOfShooterObject;
+
+        #region DISABLE AFTER DISTANCE
+        timeToDisable = distanceToDisable / Speed;
+        StartCoroutine(DisableProjectile());
+        //print(timeToDisable);
+        #endregion
     }
 
     //Spawn setup (with custom attack damage)

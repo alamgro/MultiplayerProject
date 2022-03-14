@@ -1378,7 +1378,7 @@ MonoBehaviour:
   attackDamage: 1
   attackCooldown: 0.2
   attackOriginPoint: {fileID: 3320995104714118067}
-  projectileSpeed: 13
+  projectileSpeed: 15
   maskIgnorePlayer:
     serializedVersion: 2
     m_Bits: 311

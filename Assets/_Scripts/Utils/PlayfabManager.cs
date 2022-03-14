@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using PlayFab;
 using PlayFab.ClientModels;
 using System;
@@ -28,11 +29,10 @@ public class PlayfabManager : MonoBehaviour
     private string entityID;
     private string entityType;
 
-    private int currentKills;
-
     private void Awake()
     {
         _instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     void Start()
@@ -58,6 +58,7 @@ public class PlayfabManager : MonoBehaviour
             entityID = result.EntityToken.Entity.Id;
             entityType = result.EntityToken.Entity.Type;
 
+            SceneManager.LoadScene(GameConstants.Scene.mainMenu);
             //GetCoins();
             //AddFriend();
             //GetFriendList();
@@ -110,13 +111,94 @@ public class PlayfabManager : MonoBehaviour
 
         PlayFabClientAPI.UpdateUserData(request, UpdateUserDataSucess, UpdateUserDataError);
     }
+    
+    //Adds 1 death to the "Deaths" Data
+    public void UpdateDeaths()
+    {
+        GetDeathsAndUpdate();
+    }
+
+    private void GetDeathsAndUpdate()
+    {
+        var request = new GetUserDataRequest()
+        {
+
+        };
+
+        void GetUserDataSuccess(GetUserDataResult result)
+        {
+            GameManager.Instance.TotalDeaths = 0;
+            if (result.Data.ContainsKey(PlayfabConsts.UserData.Deaths))
+            {
+                print($"El jugador tiene: {result.Data[PlayfabConsts.UserData.Deaths].Value} deaths");
+                GameManager.Instance.TotalDeaths = int.Parse(result.Data[PlayfabConsts.UserData.Deaths].Value);
+            }
+
+            AddDeath();
+        }
+
+        void GetUserDataError(PlayFabError error)
+        {
+            print(error.GenerateErrorReport());
+        }
+
+        PlayFabClientAPI.GetUserData(request, GetUserDataSuccess, GetUserDataError);
+    }
+
+    public void GetDeaths()
+    {
+        var request = new GetUserDataRequest()
+        {
+
+        };
+
+        void GetUserDataSuccess(GetUserDataResult result)
+        {
+            GameManager.Instance.TotalDeaths = 0;
+            if (result.Data.ContainsKey(PlayfabConsts.UserData.Deaths))
+            {
+                print($"El jugador tiene: {result.Data[PlayfabConsts.UserData.Deaths].Value} deaths");
+                GameManager.Instance.TotalDeaths = int.Parse(result.Data[PlayfabConsts.UserData.Deaths].Value);
+            }
+        }
+
+        void GetUserDataError(PlayFabError error)
+        {
+            print(error.GenerateErrorReport());
+        }
+
+        PlayFabClientAPI.GetUserData(request, GetUserDataSuccess, GetUserDataError);
+    }
+
+    private void AddDeath()
+    {
+        var request = new UpdateUserDataRequest()
+        {
+            Data = new Dictionary<string, string>()
+            {
+                { PlayfabConsts.UserData.Deaths , Convert.ToString(GameManager.Instance.TotalDeaths + 1) }
+            }
+        };
+
+        void UpdateUserDataSucess(UpdateUserDataResult result)
+        {
+            print($"1 death were successfully added.");
+        }
+
+        void UpdateUserDataError(PlayFabError error)
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        }
+
+        PlayFabClientAPI.UpdateUserData(request, UpdateUserDataSucess, UpdateUserDataError);
+    }
 
     public void UpdateKills(int _killsToAdd)
     {
-        GetKills(_killsToAdd);
+        GetKillsAndUpdate(_killsToAdd);
     }
 
-    private void GetKills(int _killsToAdd)
+    private void GetKillsAndUpdate(int _killsToAdd)
     {
         var request = new GetUserDataRequest()
         {
@@ -128,12 +210,36 @@ public class PlayfabManager : MonoBehaviour
             if (result.Data.ContainsKey(PlayfabConsts.UserData.Kills))
             {
                 print($"El jugador tiene: {result.Data[PlayfabConsts.UserData.Kills].Value} kills");
-                currentKills = int.Parse( result.Data[PlayfabConsts.UserData.Kills].Value); 
+                GameManager.Instance.TotalKills = int.Parse( result.Data[PlayfabConsts.UserData.Kills].Value); 
                 AddKills(_killsToAdd);
             }
-            else
+            /*else
             {
                 GiveCoinsStarterPack();
+            }*/
+        }
+
+        void GetUserDataError(PlayFabError error)
+        {
+            print(error.GenerateErrorReport());
+        }
+
+        PlayFabClientAPI.GetUserData(request, GetUserDataSuccess, GetUserDataError);
+    }
+
+    public void GetKills()
+    {
+        var request = new GetUserDataRequest()
+        {
+
+        };
+
+        void GetUserDataSuccess(GetUserDataResult result)
+        {
+            if (result.Data.ContainsKey(PlayfabConsts.UserData.Kills))
+            {
+                print($"El jugador tiene: {result.Data[PlayfabConsts.UserData.Kills].Value} kills");
+                GameManager.Instance.TotalKills = int.Parse(result.Data[PlayfabConsts.UserData.Kills].Value);
             }
         }
 
@@ -151,7 +257,7 @@ public class PlayfabManager : MonoBehaviour
         {
             Data = new Dictionary<string, string>()
             {
-                { PlayfabConsts.UserData.Kills , Convert.ToString(currentKills + _killsToAdd) }
+                { PlayfabConsts.UserData.Kills , Convert.ToString(GameManager.Instance.TotalKills + GameManager.Instance.LevelKills) }
             }
         };
 
@@ -268,14 +374,74 @@ public class PlayfabManager : MonoBehaviour
 
     }
 
-    [ContextMenu("Update Statistics")]
-    private void UpdatePoints()
+    private void GetStatisticsPointsAndUpdate()
     {
+        List<string> points = new List<string>
+        {
+            PlayfabConsts.Statistics.Points
+        };
+
+        var request = new GetPlayerStatisticsRequest()
+        {
+            StatisticNames = points
+        };
+
+        void GetStatisticsPointsSuccess(GetPlayerStatisticsResult result)
+        {
+            foreach (var points in result.Statistics)
+            {
+                GameManager.Instance.TotalPoints = points.Value;
+                print($"Current points: {GameManager.Instance.TotalPoints}");
+                AddPoints();
+            }
+        }
+
+        void GetStatisticsPointsError(PlayFabError error)
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        }
+
+        PlayFabClientAPI.GetPlayerStatistics(request, GetStatisticsPointsSuccess, GetStatisticsPointsError);
+    }
+
+    public void GetStatisticsPoints()
+    {
+        List<string> points = new List<string>
+        {
+            PlayfabConsts.Statistics.Points
+        };
+
+        var request = new GetPlayerStatisticsRequest()
+        {
+            StatisticNames = points
+        };
+
+        void GetStatisticsPointsSuccess(GetPlayerStatisticsResult result)
+        {
+            foreach (var points in result.Statistics)
+            {
+                GameManager.Instance.TotalPoints = points.Value;
+                print($"Current points: {GameManager.Instance.TotalPoints}");
+            }
+        }
+
+        void GetStatisticsPointsError(PlayFabError error)
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        }
+
+        PlayFabClientAPI.GetPlayerStatistics(request, GetStatisticsPointsSuccess, GetStatisticsPointsError);
+    }
+
+    [ContextMenu("Update Statistics")]
+    private void AddPoints()
+    {
+        print($"Total points: {GameManager.Instance.LevelPoints}");
         List<StatisticUpdate> statistics = new List<StatisticUpdate>();
         statistics.Add(new StatisticUpdate()
         {
             StatisticName = PlayfabConsts.Statistics.Points,
-            Value = 10
+            Value = (GameManager.Instance.LevelPoints + GameManager.Instance.TotalPoints)
         });
 
         var request = new UpdatePlayerStatisticsRequest()
@@ -285,7 +451,7 @@ public class PlayfabManager : MonoBehaviour
 
         void UpdatePlayerStatisticsSuccess(UpdatePlayerStatisticsResult result)
         {
-            print("The statistics were successfully updated.");
+            print("The Points statistics were successfully updated.");
         }
 
         void UpdatePlayerStatisticsError(PlayFabError error)
@@ -296,8 +462,13 @@ public class PlayfabManager : MonoBehaviour
         PlayFabClientAPI.UpdatePlayerStatistics(request, UpdatePlayerStatisticsSuccess, UpdatePlayerStatisticsError);
     }
 
+    public void UpdatePoints()
+    {
+        GetStatisticsPointsAndUpdate();
+    }
+
     [ContextMenu("Get Leader Board")]
-    private void FetchLeaderBoard()
+    public void FetchLeaderBoard()
     {
         var request = new GetLeaderboardRequest()
         {
@@ -311,6 +482,14 @@ public class PlayfabManager : MonoBehaviour
             foreach (var leader in result.Leaderboard)
             {
                 print($"User ID {leader.PlayFabId} has: {leader.StatValue} points.");
+                if (GameManager.Instance.LeaderBoard.ContainsKey(leader.PlayFabId))
+                {
+                    GameManager.Instance.LeaderBoard[leader.PlayFabId] = leader.StatValue;
+                }
+                else
+                {
+                    GameManager.Instance.LeaderBoard.Add(leader.PlayFabId, leader.StatValue);
+                }
             }
         }
 
