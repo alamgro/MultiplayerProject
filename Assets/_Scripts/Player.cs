@@ -32,6 +32,8 @@ public class Player : MonoBehaviour, IDamageable
 
         poolProjectiles = new List<Projectile>();
         shootTimer = attackCooldown;
+
+        GameManager.Instance.PlayerInstance = this;
     }
 
     

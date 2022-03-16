@@ -22,7 +22,8 @@ public class GameManager : MonoBehaviour
     private Dictionary<string, int> leaderBoard = new Dictionary<string, int>();
     #endregion
 
-    public Player PlayerInstance => playerInstance;
+    public Player PlayerInstance {get => playerInstance; set => playerInstance = value;}
+
     public int LevelKills { get => levelKills; set => levelKills = value; }
     public int LevelPoints { get => levelPoints; set => levelPoints = value; }
     public int TotalKills { get => totalKills; set => totalKills = value; }
@@ -32,19 +33,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        _instance = this;
-
-        FindPlayer();
         SceneManager.sceneLoaded += OnSceneLoaded;
-
-        try
-        {
-            playerInstance = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        }
-        catch (System.Exception)
-        {
-            playerInstance = null;
-        }
     }
 
     [RuntimeInitializeOnLoadMethod]
@@ -56,7 +45,8 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
-        FindPlayer();
+        //FindPlayer();
+        ResetLevelStatistics();
     }
 
     private void FindPlayer()
@@ -71,7 +61,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ResetLocalStatistics()
+    public void ResetLevelStatistics()
     {
         levelKills = 0;
         levelPoints = 0;
