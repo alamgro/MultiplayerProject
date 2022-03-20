@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [SelectionBase]
-public class Player : MonoBehaviour, IDamageable
+public class Player : NetworkBehaviour, IDamageable
 {
     [Header("Basic attributes")]
     [SerializeField] private float movementSpeed;
@@ -39,6 +40,8 @@ public class Player : MonoBehaviour, IDamageable
     
     void Update()
     {
+        if (!isLocalPlayer) return;
+        //Owner code:
         #region MOVEMENT
         moveDirection.x = Input.GetAxisRaw(GameConstants.Key.horizontal);//Get movement X direction 
         moveDirection.x *= movementSpeed; //Apply movement speed
@@ -88,7 +91,7 @@ public class Player : MonoBehaviour, IDamageable
         else
         {
             //Look at where the player is walking to
-            if(moveDirection.x != 0f)
+            if (moveDirection.x != 0f)
                 transform.localScale = new Vector3(Mathf.Sign(moveDirection.x), transform.localScale.y, transform.localScale.z);
         }
         #endregion
@@ -101,6 +104,7 @@ public class Player : MonoBehaviour, IDamageable
         rigidB.velocity = moveDirection;
     }
 
+    [ServerCallback]
     void IDamageable.TakeDamage(int _damage)
     {
         //Die();

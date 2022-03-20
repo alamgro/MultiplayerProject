@@ -48,8 +48,8 @@ public class PlayfabManager : MonoBehaviour
     [RuntimeInitializeOnLoadMethod]
     static void AutoCreate()
     {
-        if (_instance == null)
-            _instance = new GameObject("PlayfabManager").AddComponent<PlayfabManager>();
+        /*if (_instance == null)
+           _instance = new GameObject("PlayfabManager").AddComponent<PlayfabManager>();*/
     }
 
     [ContextMenu("Login")]
