@@ -5,6 +5,7 @@ using Mirror;
 
 public class MirrorPlayer : NetworkBehaviour
 {
+    public static MirrorPlayer Instance { get; private set; }
     public GameObject pfbProjectile;
 
     [SerializeField] private float speed;
@@ -16,8 +17,21 @@ public class MirrorPlayer : NetworkBehaviour
     private int hp = 10;
     SyncList<int> myList = new SyncList<int>();
 
+    private MirrorTransform mirrorTransform;
+
+    private void Awake()
+    {
+        mirrorTransform = GetComponent<MirrorTransform>();
+    }
+
     private void Start()
     {
+        if (isLocalPlayer)
+        {
+            Instance = this;
+            Camera.main.GetComponent<CameraController>().FollowLocalPlayer();
+        }
+
         //Para este punto, las variables SyncVar ya están sincronizadas
 
         myList.Callback += OnMyListChange;
@@ -33,7 +47,11 @@ public class MirrorPlayer : NetworkBehaviour
         moveDir.x = Input.GetAxisRaw("Horizontal");
         moveDir.z = Input.GetAxisRaw("Vertical");
 
-        transform.Translate(moveDir.normalized * speed * Time.deltaTime);
+        mirrorTransform.direction = moveDir * speed;
+
+        //transform.Translate(moveDir.normalized * speed * Time.deltaTime);
+        transform.Translate(mirrorTransform.direction.normalized * speed * Time.deltaTime);
+
 
         if (Input.GetKeyDown(KeyCode.C))
             CMD_ChangeColor();
@@ -95,7 +113,7 @@ public class MirrorPlayer : NetworkBehaviour
         GetComponent<MeshRenderer>().material.color = _newColor;
     }
 
-    //DE cliente a servidor
+    //De cliente a servidor
     [Command]
     private void CMD_ChangeColor()
     {

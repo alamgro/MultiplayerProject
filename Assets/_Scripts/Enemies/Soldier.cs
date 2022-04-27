@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Soldier : MonoBehaviour, IDamageable
@@ -20,7 +21,7 @@ public class Soldier : MonoBehaviour, IDamageable
     [SerializeField] private GameObject pfbProjectile;
 
     private Rigidbody2D rigidB;
-    private Player playerInstance;
+    private List<Player> playerInstances;
     private Vector3 vectorToPlayer;
     private float attackCurrentCooldown = 0f;
     private float currentMovementSpeed;
@@ -30,15 +31,15 @@ public class Soldier : MonoBehaviour, IDamageable
     void Start()
     {
         rigidB = GetComponent<Rigidbody2D>();
-        playerInstance = GameManager.Instance.PlayerInstance;
+        playerInstances = GameManager.Instance.PlayerInstances;
 
         currentMovementSpeed = baseMovementSpeed;
     }
 
-    
+    [ServerCallback]
     void Update()
     {
-        vectorToPlayer = playerInstance.GetComponent<Collider2D>().bounds.center - attackOriginPoint.position;
+        //vectorToPlayer = playerInstances.GetComponent<Collider2D>().bounds.center - attackOriginPoint.position;
         
         rigidB.velocity = Vector3.up * rigidB.velocity.y;
 
@@ -120,6 +121,7 @@ public class Soldier : MonoBehaviour, IDamageable
 
     private void Die()
     {
+        Debug.Log("Died.", gameObject);
         GameManager.Instance.LevelKills += 1;
         GameManager.Instance.LevelPoints += pointsValue;
         Destroy(gameObject);

@@ -99,6 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af07a419a723d924b9eeabf907f0c0a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   distanceToDisable: 20
 --- !u!50 &8783680847313866690
 Rigidbody2D:

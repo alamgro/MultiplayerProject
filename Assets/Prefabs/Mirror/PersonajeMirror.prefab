@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 5518725926757938764}
   - component: {fileID: 5940761527881635336}
   - component: {fileID: 3154647262749280922}
-  - component: {fileID: 8349801809484524963}
   - component: {fileID: 7143654463515217663}
-  - component: {fileID: 247218582937994656}
+  - component: {fileID: 8349801809484524963}
+  - component: {fileID: -7215696462946553516}
   m_Layer: 0
   m_Name: PersonajeMirror
   m_TagString: Player
@@ -98,6 +98,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7143654463515217663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 420107778064377517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd842c54fdd65f741ad4de33f174eaa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  pfbProjectile: {fileID: 1248956088805191049, guid: de97a76a212b1fe4bb22b19d1809bc1d, type: 3}
+  speed: 5
 --- !u!114 &8349801809484524963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,7 +131,7 @@ MonoBehaviour:
   visible: 0
   m_AssetId: ffea4e18c31bf9c49ba47bd872231166
   hasSpawned: 0
---- !u!114 &7143654463515217663
+--- !u!114 &-7215696462946553516
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,44 +140,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 420107778064377517}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd842c54fdd65f741ad4de33f174eaa2, type: 3}
+  m_Script: {fileID: 11500000, guid: a4c382793225def4fb472edab6b032de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  pfbProjectile: {fileID: 1248956088805191049, guid: de97a76a212b1fe4bb22b19d1809bc1d, type: 3}
-  speed: 5
---- !u!114 &247218582937994656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 420107778064377517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 1
-  sendInterval: 0.05
-  syncPosition: 1
-  syncRotation: 0
-  syncScale: 0
-  interpolatePosition: 1
-  interpolateRotation: 1
-  interpolateScale: 0
-  bufferTimeMultiplier: 1
-  bufferSizeLimit: 64
-  catchupThreshold: 4
-  catchupMultiplier: 0.1
-  onlySyncOnChange: 1
-  bufferResetMultiplier: 5
-  positionSensitivity: 0.01
-  rotationSensitivity: 0.01
-  scaleSensitivity: 0.01
-  showGizmos: 0
-  showOverlay: 0
-  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  packagesPerSecond: 20
