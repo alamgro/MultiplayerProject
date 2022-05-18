@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [SelectionBase]
-public class Player : MonoBehaviour, IDamageable
+public class Player : NetworkBehaviour, IDamageable
 {
     [Header("Basic attributes")]
     [SerializeField] private float movementSpeed;
@@ -22,21 +23,28 @@ public class Player : MonoBehaviour, IDamageable
     private Vector3 shootDirection;
     private Rigidbody2D rigidB;
     private Collider2D playerCollider;
+    private Animator anim;
     private float shootTimer;
-    private List<Projectile> poolProjectiles;
+    private SyncList<Projectile> poolProjectiles = new SyncList<Projectile>();
+
+    public Transform AttackOriginPoint => attackOriginPoint;
 
     void Start()
     {
         rigidB = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<Collider2D>();
+        anim = GetComponent<Animator>();
 
-        poolProjectiles = new List<Projectile>();
         shootTimer = attackCooldown;
+
+        GameManager.Instance.PlayerInstances.Add(this);
     }
 
     
     void Update()
     {
+        if (!isLocalPlayer) return;
+        //Owner code:
         #region MOVEMENT
         moveDirection.x = Input.GetAxisRaw(GameConstants.Key.horizontal);//Get movement X direction 
         moveDirection.x *= movementSpeed; //Apply movement speed
@@ -45,18 +53,7 @@ public class Player : MonoBehaviour, IDamageable
 
         #region SHOOT
         shootTimer -= Time.deltaTime;
-        if(shootTimer <= 0f)
-        {
-            shootDirection.x = Input.GetAxisRaw(GameConstants.Key.shootHorizontal);
-            shootDirection.y = Input.GetAxisRaw(GameConstants.Key.shootVertical);
-            if (shootDirection != Vector3.zero)
-            {
-                shootDirection.Normalize();
-                shootTimer = attackCooldown;
-                //Shoot(shootDirection);
-                ShootProjectile();
-            }
-        }
+        CheckShootInput();
         #endregion
 
         #region JUMP
@@ -86,7 +83,7 @@ public class Player : MonoBehaviour, IDamageable
         else
         {
             //Look at where the player is walking to
-            if(moveDirection.x != 0f)
+            if (moveDirection.x != 0f)
                 transform.localScale = new Vector3(Mathf.Sign(moveDirection.x), transform.localScale.y, transform.localScale.z);
         }
         #endregion
@@ -99,16 +96,46 @@ public class Player : MonoBehaviour, IDamageable
         rigidB.velocity = moveDirection;
     }
 
+    [ServerCallback]
     void IDamageable.TakeDamage(int _damage)
     {
         //Die();
-        Debug.Log("Die");
+        //Debug.Log("Die");
 
         //QUIERO CAMBIAR ESTO AL FINAL DEL NIVEL (UNA SOLA ACTUALIZACIÓN AL FINAL, Y NO UNA POR MUERTE)
-        PlayfabManager.Instance.UpdateDeaths(); 
+        //PlayfabManager.Instance.UpdateDeaths(); 
     }
 
-    private Projectile ShootProjectile()
+    private void CheckShootInput()
+    {
+        if (shootTimer <= 0f)
+        {
+            shootDirection.x = Input.GetAxisRaw(GameConstants.Key.shootHorizontal);
+            shootDirection.y = Input.GetAxisRaw(GameConstants.Key.shootVertical);
+            if (shootDirection != Vector3.zero)
+            {
+                shootDirection.Normalize();
+                shootTimer = attackCooldown;
+                //Shoot(shootDirection);
+                CMD_ShootProjectile(shootDirection);
+            }
+        }
+    }
+
+    [Command]
+    private void CMD_ShootProjectile(Vector3 _shootDirection)
+    {
+        Vector3 spawnPosition = attackOriginPoint.position + (_shootDirection * 0.5f);
+        
+        Projectile projectile = NetworkManager.Instantiate(pfbProjectile, spawnPosition, Quaternion.identity).GetComponent<Projectile>();
+        projectile.Init(spawnPosition, _shootDirection, projectileSpeed, attackDamage, LayerMask.NameToLayer(GameConstants.Layer.ally));
+        
+        NetworkServer.Spawn(projectile.gameObject); //ya le avisa a los clientes que se generen
+    }
+
+    /*
+    [Command]
+    private void CMD_ShootProjectile()
     {
         //Spawn position with an offset on the Z axis
         Vector3 spawnPosition = attackOriginPoint.position + (shootDirection * 0.5f);
@@ -120,18 +147,19 @@ public class Player : MonoBehaviour, IDamageable
             {
                 poolProjectiles[i].gameObject.SetActive(true);
                 //Setup projectile
-                poolProjectiles[i].GetComponent<Projectile>().Init(
+                poolProjectiles[i].GetComponent<Projectile>().CMD_Init(
                     spawnPosition, shootDirection, projectileSpeed, attackDamage, LayerMask.NameToLayer(GameConstants.Layer.ally));
-                return poolProjectiles[i];
+                //return poolProjectiles[i];
             }
         }
 
         //Instantiate and setup new projectile
-        poolProjectiles.Add(Instantiate(pfbProjectile).GetComponent<Projectile>());
+        poolProjectiles.Add(NetworkManager.Instantiate(pfbProjectile).GetComponent<Projectile>());
         //Setup projectile
-        poolProjectiles[poolProjectiles.Count - 1].GetComponent<Projectile>().Init(
+        poolProjectiles[poolProjectiles.Count - 1].GetComponent<Projectile>().CMD_Init(
             spawnPosition, shootDirection.normalized, projectileSpeed, attackDamage, LayerMask.NameToLayer(GameConstants.Layer.ally));
+        NetworkServer.Spawn(poolProjectiles[poolProjectiles.Count - 1].gameObject);
 
-        return poolProjectiles[poolProjectiles.Count - 1];
-    }
+        //return poolProjectiles[poolProjectiles.Count - 1];
+    }*/
 }

@@ -59,7 +59,6 @@ public class MainMenu : MonoBehaviour
         PlayfabManager.Instance.GetKills();
         PlayfabManager.Instance.GetDeaths();
         PlayfabManager.Instance.FetchLeaderBoard();
-
     }
 
     

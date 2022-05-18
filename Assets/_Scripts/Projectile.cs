@@ -1,15 +1,16 @@
 using System.Collections;
 using UnityEngine;
+using Mirror;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Projectile : MonoBehaviour
+public class Projectile : NetworkBehaviour
 {
     [SerializeField] private float distanceToDisable;
 
     private float timeToDisable; //The time that will pass before disabling the object
-    private float speed;
+    [SyncVar] private float speed;
+    [SyncVar] private Vector2 movementDirection;
     private int attackDamage;
-    private Vector2 movementDirection;
     private Rigidbody2D rigidB;
 
 
@@ -17,16 +18,19 @@ public class Projectile : MonoBehaviour
     public float Speed { get => speed; set => speed = value; }
     public int AttackDamage { get => attackDamage; set => attackDamage = value; }
 
+    
     void Start()
     {
         rigidB = GetComponent<Rigidbody2D>();
     }
 
+    [ServerCallback]
     private void FixedUpdate()
     {
-        rigidB.velocity = MovementDirection * speed;
+        rigidB.velocity = MovementDirection * Speed;
     }
 
+    [ServerCallback]
     private void OnTriggerEnter2D(Collider2D collider2D)
     {
         //Check if the collisioned object has the IDamageable component, meaning that it can take damage
@@ -37,27 +41,31 @@ public class Projectile : MonoBehaviour
             damageable.TakeDamage(AttackDamage);
         }
 
-        gameObject.SetActive(false);
-
+        NetworkManager.Destroy(gameObject, timeToDisable);
     }
 
     //Spawn setup (with default attack damage 1)
-    public void Init(Vector3 _spawnPosition, Vector3 _movementDirection, float _speed, LayerMask _layerOfShooterObject)
+    public void RCP_Init(Vector3 _spawnPosition, Vector3 _movementDirection, float _speed, LayerMask _layerOfShooterObject)
     {
         transform.position = _spawnPosition;
         MovementDirection = _movementDirection;
         Speed = _speed;
         AttackDamage = 1;
+        Debug.Log($"Speed: {_speed}");
+        Debug.Log($"MoveDir: {_movementDirection}");
 
         //This should be the layer of the object that is calling this function. This way it will ignore its own collider.
         gameObject.layer = _layerOfShooterObject;
 
         #region DISABLE AFTER DISTANCE
         timeToDisable = distanceToDisable / Speed;
-        StartCoroutine(DisableProjectile());
+        NetworkManager.Destroy(gameObject, timeToDisable);
+
+        //CMD_DisableProjectile();
         //print(timeToDisable);
         #endregion
     }
+
 
     //Spawn setup (with custom attack damage)
     public void Init(Vector3 _spawnPosition, Vector3 _movementDirection, float _speed, int _attackDamage, LayerMask _layerOfShooterObject)
@@ -67,20 +75,31 @@ public class Projectile : MonoBehaviour
         AttackDamage = _attackDamage;
         Speed = _speed;
 
+        //print($"Dirección: {MovementDirection}, Vel: {Speed}");
+
         //This should be the layer of the object that is calling this function. This way it will ignore its own collider.
         gameObject.layer = _layerOfShooterObject;
 
         #region DISABLE AFTER DISTANCE
         timeToDisable = distanceToDisable / Speed;
-        StartCoroutine(DisableProjectile());
+        NetworkManager.Destroy(gameObject, timeToDisable);
+        //CMD_DisableProjectile();
         //print(timeToDisable);
         #endregion
     }
 
+    /*
     private IEnumerator DisableProjectile()
     {
         yield return new WaitForSecondsRealtime(timeToDisable);
         gameObject.SetActive(false);
     }
+
+    [ServerCallback]
+    private void CMD_DisableProjectile()
+    {
+        StartCoroutine(DisableProjectile());
+    }
+    */
 
 }

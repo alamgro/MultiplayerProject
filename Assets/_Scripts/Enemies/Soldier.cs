@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Soldier : MonoBehaviour, IDamageable
+[SelectionBase]
+public class Soldier : NetworkBehaviour, IDamageable
 {
     [Header("Basic attributes")]
     [SerializeField] private float baseMovementSpeed;
@@ -20,25 +22,25 @@ public class Soldier : MonoBehaviour, IDamageable
     [SerializeField] private GameObject pfbProjectile;
 
     private Rigidbody2D rigidB;
-    private Player playerInstance;
     private Vector3 vectorToPlayer;
     private float attackCurrentCooldown = 0f;
     private float currentMovementSpeed;
     private bool isReadyToAttack;
-    private bool followPlayer = false; 
+    private bool followPlayer = false;
 
     void Start()
     {
         rigidB = GetComponent<Rigidbody2D>();
-        playerInstance = GameManager.Instance.PlayerInstance;
 
         currentMovementSpeed = baseMovementSpeed;
+
+        
     }
 
-    
+    [ServerCallback]
     void Update()
     {
-        vectorToPlayer = playerInstance.GetComponent<Collider2D>().bounds.center - attackOriginPoint.position;
+        //vectorToPlayer = playerInstances.GetComponent<Collider2D>().bounds.center - attackOriginPoint.position;
         
         rigidB.velocity = Vector3.up * rigidB.velocity.y;
 
@@ -81,6 +83,7 @@ public class Soldier : MonoBehaviour, IDamageable
         {
             Gizmos.DrawWireSphere(transform.position, attackRangeDistance);
         }
+
     }
     
     //Move to target a fixed amount of time
@@ -94,8 +97,19 @@ public class Soldier : MonoBehaviour, IDamageable
         isReadyToAttack = true;
     }
 
+
     private IEnumerator Attack()
     {
+        float distanceToPlayer = Mathf.Infinity;
+        foreach (var player in GameManager.Instance.PlayerInstances)
+        {
+            if(distanceToPlayer > Vector3.Distance(player.AttackOriginPoint.position, attackOriginPoint.position))
+            {
+                distanceToPlayer = Vector3.Distance(player.AttackOriginPoint.position, attackOriginPoint.position);
+                vectorToPlayer = player.AttackOriginPoint.position - attackOriginPoint.position;
+            }
+        }
+
         attackCurrentCooldown = attackCooldown + attackCastingDelay;
         currentMovementSpeed = 0f;
         Vector3 spawnPosition = attackOriginPoint.position + (vectorToPlayer.normalized * 0.5f);
@@ -103,7 +117,9 @@ public class Soldier : MonoBehaviour, IDamageable
         yield return new WaitForSecondsRealtime(attackCastingDelay);
         //print("Attack!!!");
         Projectile projectile = Instantiate(pfbProjectile, transform.localPosition, pfbProjectile.transform.rotation).GetComponent<Projectile>();
-        projectile.Init(spawnPosition, vectorToPlayer.normalized, projectileSpeed, LayerMask.NameToLayer(GameConstants.Layer.enemyProjectile));
+        NetworkServer.Spawn(projectile.gameObject);
+
+        projectile.RCP_Init(spawnPosition, vectorToPlayer.normalized, projectileSpeed, LayerMask.NameToLayer(GameConstants.Layer.enemyProjectile));
     }
 
     void IDamageable.TakeDamage(int _damage)
@@ -120,6 +136,7 @@ public class Soldier : MonoBehaviour, IDamageable
 
     private void Die()
     {
+        Debug.Log("Died.", gameObject);
         GameManager.Instance.LevelKills += 1;
         GameManager.Instance.LevelPoints += pointsValue;
         Destroy(gameObject);

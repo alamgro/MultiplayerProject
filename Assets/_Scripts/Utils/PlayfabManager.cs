@@ -31,13 +31,25 @@ public class PlayfabManager : MonoBehaviour
 
     private void Awake()
     {
-        _instance = this;
-        DontDestroyOnLoad(gameObject);
+        if (_instance != null)
+            Destroy(gameObject);
+        else
+        {
+            _instance = this;
+            DontDestroyOnLoad(_instance.gameObject);
+        }
     }
 
     void Start()
     {
         Login();
+    }
+
+    [RuntimeInitializeOnLoadMethod]
+    static void AutoCreate()
+    {
+        /*if (_instance == null)
+           _instance = new GameObject("PlayfabManager").AddComponent<PlayfabManager>();*/
     }
 
     [ContextMenu("Login")]
