@@ -98,7 +98,7 @@ public class Player : NetworkBehaviour, IDamageable
     void IDamageable.TakeDamage(int _damage)
     {
         //Die();
-        Debug.Log("Die");
+        //Debug.Log("Die");
 
         //QUIERO CAMBIAR ESTO AL FINAL DEL NIVEL (UNA SOLA ACTUALIZACIÓN AL FINAL, Y NO UNA POR MUERTE)
         //PlayfabManager.Instance.UpdateDeaths(); 

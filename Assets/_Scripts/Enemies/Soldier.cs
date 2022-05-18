@@ -4,7 +4,8 @@ using UnityEngine;
 using Mirror;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Soldier : MonoBehaviour, IDamageable
+[SelectionBase]
+public class Soldier : NetworkBehaviour, IDamageable
 {
     [Header("Basic attributes")]
     [SerializeField] private float baseMovementSpeed;
@@ -21,7 +22,6 @@ public class Soldier : MonoBehaviour, IDamageable
     [SerializeField] private GameObject pfbProjectile;
 
     private Rigidbody2D rigidB;
-    private List<Player> playerInstances;
     private Vector3 vectorToPlayer;
     private float attackCurrentCooldown = 0f;
     private float currentMovementSpeed;
@@ -31,9 +31,13 @@ public class Soldier : MonoBehaviour, IDamageable
     void Start()
     {
         rigidB = GetComponent<Rigidbody2D>();
-        playerInstances = GameManager.Instance.PlayerInstances;
 
         currentMovementSpeed = baseMovementSpeed;
+
+        foreach (var player in GameManager.Instance.PlayerInstances)
+        {
+            Debug.Log(player.name, gameObject);
+        }
     }
 
     [ServerCallback]

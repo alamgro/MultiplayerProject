@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class EnemiesSpawnZone : MonoBehaviour
+public class EnemiesSpawnZone : NetworkBehaviour
 {
     [System.Serializable]
     public class EnemySpawn
@@ -28,11 +28,17 @@ public class EnemiesSpawnZone : MonoBehaviour
         {
             foreach (EnemySpawn enemy in enemiesToSpawn)
             {
-                GameObject go = Instantiate(enemy.prefab, transform);
-                go.transform.position = enemy.transform.position;
+                GameObject go = NetworkManager.Instantiate(enemy.prefab, enemy.transform.position, enemy.prefab.transform.rotation);
+                //go.transform.position = enemy.transform.position;
+                NetworkServer.Spawn(go);
             }
-            this.enabled = false;
+            RCP_DeactivateSpawnZone();
         }
+    }
 
+    [ClientRpc]
+    private void RCP_DeactivateSpawnZone()
+    {
+        gameObject.SetActive(false);
     }
 }
