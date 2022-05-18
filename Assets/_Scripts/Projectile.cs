@@ -45,12 +45,14 @@ public class Projectile : NetworkBehaviour
     }
 
     //Spawn setup (with default attack damage 1)
-    public void Init(Vector3 _spawnPosition, Vector3 _movementDirection, float _speed, LayerMask _layerOfShooterObject)
+    public void RCP_Init(Vector3 _spawnPosition, Vector3 _movementDirection, float _speed, LayerMask _layerOfShooterObject)
     {
         transform.position = _spawnPosition;
         MovementDirection = _movementDirection;
         Speed = _speed;
         AttackDamage = 1;
+        Debug.Log($"Speed: {_speed}");
+        Debug.Log($"MoveDir: {_movementDirection}");
 
         //This should be the layer of the object that is calling this function. This way it will ignore its own collider.
         gameObject.layer = _layerOfShooterObject;

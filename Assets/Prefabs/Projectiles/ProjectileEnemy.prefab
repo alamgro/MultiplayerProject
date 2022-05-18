@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 2257747971130787459}
   - component: {fileID: -5996073191885657992}
   - component: {fileID: -2748503501536518527}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ProjectileEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,6 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af07a419a723d924b9eeabf907f0c0a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   distanceToDisable: 20
 --- !u!50 &8783680847313866690
 Rigidbody2D:

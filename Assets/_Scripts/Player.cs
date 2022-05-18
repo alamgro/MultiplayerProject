@@ -27,6 +27,8 @@ public class Player : NetworkBehaviour, IDamageable
     private float shootTimer;
     private SyncList<Projectile> poolProjectiles = new SyncList<Projectile>();
 
+    public Transform AttackOriginPoint => attackOriginPoint;
+
     void Start()
     {
         rigidB = GetComponent<Rigidbody2D>();

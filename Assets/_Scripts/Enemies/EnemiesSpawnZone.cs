@@ -28,6 +28,8 @@ public class EnemiesSpawnZone : NetworkBehaviour
         {
             foreach (EnemySpawn enemy in enemiesToSpawn)
             {
+                if (!enemy.prefab) continue;
+
                 GameObject go = NetworkManager.Instantiate(enemy.prefab, enemy.transform.position, enemy.prefab.transform.rotation);
                 //go.transform.position = enemy.transform.position;
                 NetworkServer.Spawn(go);
