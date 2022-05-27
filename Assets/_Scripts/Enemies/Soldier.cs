@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using FMODUnity;
+using FMOD.Studio;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [SelectionBase]
@@ -20,6 +22,8 @@ public class Soldier : NetworkBehaviour, IDamageable
     [Header("Projectile attributes")]
     [SerializeField] private float projectileSpeed;
     [SerializeField] private GameObject pfbProjectile;
+    [Header("SFX attributes")]
+    [SerializeField] private EventReference deathAudioEvent;
 
     private Rigidbody2D rigidB;
     private Vector3 vectorToPlayer;
@@ -134,11 +138,15 @@ public class Soldier : NetworkBehaviour, IDamageable
             Die();
     }
 
+    
     private void Die()
     {
         Debug.Log("Died.", gameObject);
         GameManager.Instance.LevelKills += 1;
         GameManager.Instance.LevelPoints += pointsValue;
-        Destroy(gameObject);
+        RuntimeManager.PlayOneShot(deathAudioEvent, transform.position);
+
+        NetworkManager.Destroy(gameObject);
     }
+
 }

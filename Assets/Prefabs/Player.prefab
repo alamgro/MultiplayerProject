@@ -2107,6 +2107,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 311
   pfbProjectile: {fileID: 7302094681966353782, guid: 1aab3ec643747c64985a3c8120d21083, type: 3}
+  playerAudioEvent:
+    Guid:
+      Data1: -2147112977
+      Data2: 1269731497
+      Data3: -188150117
+      Data4: -497395114
+    Path: event:/Spells/Spell_NeutralEnergy
 --- !u!50 &3746291867688479271
 Rigidbody2D:
   serializedVersion: 4

@@ -1701,6 +1701,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77edb341e36b3784dbe9c746fab5f77e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   baseMovementSpeed: 3
   walkingTime: 0.5
   hp: 1
@@ -1711,6 +1713,13 @@ MonoBehaviour:
   attackOriginPoint: {fileID: 596026307}
   projectileSpeed: 7
   pfbProjectile: {fileID: 7302094681966353782, guid: 8b559fc7994a7884ab330aa4b26d5454, type: 3}
+  deathAudioEvent:
+    Guid:
+      Data1: -597775504
+      Data2: 1335335493
+      Data3: 260045993
+      Data4: -1424650968
+    Path: event:/Enemy/EnemyDeath
 --- !u!50 &3723445172955294575
 Rigidbody2D:
   serializedVersion: 4

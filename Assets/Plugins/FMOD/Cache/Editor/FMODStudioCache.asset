@@ -1,0 +1,259 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8394677561217309438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Spells/Spell_NeutralEnergy
+  m_EditorClassIdentifier: 
+  Path: event:/Spells/Spell_NeutralEnergy
+  Guid:
+    Data1: -2147112977
+    Data2: 1269731497
+    Data3: -188150117
+    Data4: -497395114
+  Banks:
+  - {fileID: 5521658301788855490}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 470
+--- !u!114 &-1128192858144303420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Test.bank
+  m_EditorClassIdentifier: 
+  Path: ../../../Amerike/6to semestre/DemonicCatastrophe/Build/Desktop/Test.bank
+  Name: Test
+  StudioPath: bank:/Test
+  lastModified: 637892631922847509
+  FileSizes:
+  - Name: Desktop
+    Value: 1307424
+  Exists: 1
+--- !u!114 &-736326725319729714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: 
+  Path: ../../../Amerike/6to semestre/DemonicCatastrophe/Build/Desktop/Master.strings.bank
+  Name: Master.strings
+  StudioPath: bank:/Master.strings
+  lastModified: 637892631922177355
+  FileSizes:
+  - Name: Desktop
+    Value: 1258
+  Exists: 1
+--- !u!114 &-463161541376040148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Enemy/EnemyDeath
+  m_EditorClassIdentifier: 
+  Path: event:/Enemy/EnemyDeath
+  Guid:
+    Data1: -597775504
+    Data2: 1335335493
+    Data3: 260045993
+    Data4: -1424650968
+  Banks:
+  - {fileID: 2633048358054970855}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 350
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32cf7c32a3ed8347bac48ef5ed56d82, type: 3}
+  m_Name: FMODStudioCache
+  m_EditorClassIdentifier: 
+  EditorBanks:
+  - {fileID: -736326725319729714}
+  - {fileID: 5521658301788855490}
+  - {fileID: 2641767893890671529}
+  - {fileID: -1128192858144303420}
+  - {fileID: 8375293807891435346}
+  EditorEvents:
+  - {fileID: 8397288749075612384}
+  - {fileID: -8394677561217309438}
+  - {fileID: 7498981119596296442}
+  EditorParameters: []
+  MasterBanks:
+  - {fileID: 2641767893890671529}
+  StringsBanks:
+  - {fileID: -736326725319729714}
+  cacheTime: 637892631923327612
+  cacheVersion: 131590
+--- !u!114 &2633048358054970855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Enemy.bank
+  m_EditorClassIdentifier: 
+  Path: ../../../Amerike/6to semestre/DemonicCatastrophe/Build/Desktop/Enemy.bank
+  Name: Enemy
+  StudioPath: bank:/Enemy
+  lastModified: 637892631923327612
+  FileSizes:
+  - Name: Desktop
+    Value: 11168
+  Exists: 1
+--- !u!114 &2641767893890671529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: ../../../Amerike/6to semestre/DemonicCatastrophe/Build/Desktop/Master.bank
+  Name: Master
+  StudioPath: bank:/Master
+  lastModified: 637892631922157359
+  FileSizes:
+  - Name: Desktop
+    Value: 1036
+  Exists: 1
+--- !u!114 &5521658301788855490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Hechiceros.bank
+  m_EditorClassIdentifier: 
+  Path: ../../../Amerike/6to semestre/DemonicCatastrophe/Build/Desktop/Hechiceros.bank
+  Name: Hechiceros
+  StudioPath: bank:/Hechiceros
+  lastModified: 637892631922497451
+  FileSizes:
+  - Name: Desktop
+    Value: 9216
+  Exists: 1
+--- !u!114 &7498981119596296442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Enemy/EnemyDeath
+  m_EditorClassIdentifier: 
+  Path: event:/Enemy/EnemyDeath
+  Guid:
+    Data1: -597775504
+    Data2: 1335335493
+    Data3: 260045993
+    Data4: -1424650968
+  Banks:
+  - {fileID: 8375293807891435346}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 350
+--- !u!114 &8375293807891435346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Enemy.bank
+  m_EditorClassIdentifier: 
+  Path: ../../../Amerike/6to semestre/DemonicCatastrophe/Build/Desktop/Enemy.bank
+  Name: Enemy
+  StudioPath: bank:/Enemy
+  lastModified: 637892631923327612
+  FileSizes:
+  - Name: Desktop
+    Value: 11168
+  Exists: 1
+--- !u!114 &8397288749075612384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Test
+  m_EditorClassIdentifier: 
+  Path: event:/Test
+  Guid:
+    Data1: -678630280
+    Data2: 1248492088
+    Data3: 1819048634
+    Data4: -807283144
+  Banks:
+  - {fileID: -1128192858144303420}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 113754

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using FMODUnity;
+using FMOD.Studio;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [SelectionBase]
@@ -18,6 +20,12 @@ public class Player : NetworkBehaviour, IDamageable
     [SerializeField] private float projectileSpeed;
     [SerializeField] private LayerMask maskIgnorePlayer;
     [SerializeField] private GameObject pfbProjectile;
+    [Header("SFX attributes")]
+    [SerializeField] private EventReference playerAudioEvent;
+
+    #region FMOD
+    EventInstance playerAudio;
+    #endregion
 
     private Vector2 moveDirection;
     private Vector3 shootDirection;
@@ -38,6 +46,9 @@ public class Player : NetworkBehaviour, IDamageable
         shootTimer = attackCooldown;
 
         GameManager.Instance.PlayerInstances.Add(this);
+
+        if (isLocalPlayer)
+            gameObject.AddComponent(typeof(StudioListener)) ;
     }
 
     
@@ -116,6 +127,8 @@ public class Player : NetworkBehaviour, IDamageable
             {
                 shootDirection.Normalize();
                 shootTimer = attackCooldown;
+                //playerAudio = RuntimeManager.CreateInstance(playerAudioEvent);
+                //playerAudio.start();
                 //Shoot(shootDirection);
                 CMD_ShootProjectile(shootDirection);
             }
@@ -126,7 +139,9 @@ public class Player : NetworkBehaviour, IDamageable
     private void CMD_ShootProjectile(Vector3 _shootDirection)
     {
         Vector3 spawnPosition = attackOriginPoint.position + (_shootDirection * 0.5f);
-        
+
+        RuntimeManager.PlayOneShot(playerAudioEvent, spawnPosition);
+
         Projectile projectile = NetworkManager.Instantiate(pfbProjectile, spawnPosition, Quaternion.identity).GetComponent<Projectile>();
         projectile.Init(spawnPosition, _shootDirection, projectileSpeed, attackDamage, LayerMask.NameToLayer(GameConstants.Layer.ally));
         
