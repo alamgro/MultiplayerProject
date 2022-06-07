@@ -324,7 +324,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132149307305183}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 203f578707742f64680be5db7676af60, type: 3}
   m_Controller: {fileID: 9100000, guid: c9c4c2cc6f17c2c4195946152c20ed50, type: 2}
   m_CullingMode: 0
@@ -2098,11 +2098,11 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   movementSpeed: 6
-  jumpForce: 16
+  jumpForce: 13
   attackDamage: 1
   attackCooldown: 0.2
   attackOriginPoint: {fileID: 3320995104714118067}
-  projectileSpeed: 15
+  projectileSpeed: 25
   maskIgnorePlayer:
     serializedVersion: 2
     m_Bits: 311
@@ -2186,7 +2186,7 @@ MonoBehaviour:
   sendInterval: 0.05
   syncPosition: 1
   syncRotation: 1
-  syncScale: 0
+  syncScale: 1
   interpolatePosition: 1
   interpolateRotation: 1
   interpolateScale: 0

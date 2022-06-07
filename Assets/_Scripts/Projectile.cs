@@ -5,13 +5,15 @@ using Mirror;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Projectile : NetworkBehaviour
 {
-    [SerializeField] private float distanceToDisable;
+    //[SerializeField] private float distanceToDisable;
 
-    private float timeToDisable; //The time that will pass before disabling the object
+    [SerializeField] private float timeToDisable; //The time that will pass before disabling the object
+    [SerializeField] private GameObject collisionParticle;
     [SyncVar] private float speed;
     [SyncVar] private Vector2 movementDirection;
     private int attackDamage;
-    private Rigidbody2D rigidB;
+    [System.NonSerialized]
+    public Rigidbody2D rigidB;
 
 
     public Vector2 MovementDirection { get => movementDirection; set => movementDirection = value; }
@@ -22,12 +24,7 @@ public class Projectile : NetworkBehaviour
     void Start()
     {
         rigidB = GetComponent<Rigidbody2D>();
-    }
-
-    [ServerCallback]
-    private void FixedUpdate()
-    {
-        rigidB.velocity = MovementDirection * Speed;
+        rigidB.AddForce(MovementDirection * speed, ForceMode2D.Impulse);
     }
 
     [ServerCallback]
@@ -41,24 +38,26 @@ public class Projectile : NetworkBehaviour
             damageable.TakeDamage(AttackDamage);
         }
 
-        NetworkManager.Destroy(gameObject, timeToDisable);
+        if(collisionParticle)
+            NetworkServer.Spawn(Instantiate(collisionParticle, transform.position, collisionParticle.transform.rotation));
+        NetworkManager.Destroy(gameObject);
     }
 
     //Spawn setup (with default attack damage 1)
-    public void RCP_Init(Vector3 _spawnPosition, Vector3 _movementDirection, float _speed, LayerMask _layerOfShooterObject)
+    public void Init(Vector3 _spawnPosition, LayerMask _layerOfShooterObject)
     {
         transform.position = _spawnPosition;
-        MovementDirection = _movementDirection;
-        Speed = _speed;
         AttackDamage = 1;
-        Debug.Log($"Speed: {_speed}");
-        Debug.Log($"MoveDir: {_movementDirection}");
+        //Debug.Log($"Speed: {_speed}");
+        //Debug.Log($"MoveDir: {_movementDirection}");
 
         //This should be the layer of the object that is calling this function. This way it will ignore its own collider.
         gameObject.layer = _layerOfShooterObject;
 
+        //rigidB.AddForce(movementDirection * Speed, ForceMode2D.Impulse);
+
         #region DISABLE AFTER DISTANCE
-        timeToDisable = distanceToDisable / Speed;
+        //timeToDisable = distanceToDisable / Speed;
         NetworkManager.Destroy(gameObject, timeToDisable);
 
         //CMD_DisableProjectile();
@@ -68,12 +67,10 @@ public class Projectile : NetworkBehaviour
 
 
     //Spawn setup (with custom attack damage)
-    public void Init(Vector3 _spawnPosition, Vector3 _movementDirection, float _speed, int _attackDamage, LayerMask _layerOfShooterObject)
+    public void Init(Vector3 _spawnPosition, int _attackDamage, LayerMask _layerOfShooterObject)
     {
         transform.position = _spawnPosition;
-        MovementDirection = _movementDirection;
         AttackDamage = _attackDamage;
-        Speed = _speed;
 
         //print($"Dirección: {MovementDirection}, Vel: {Speed}");
 
@@ -81,7 +78,6 @@ public class Projectile : NetworkBehaviour
         gameObject.layer = _layerOfShooterObject;
 
         #region DISABLE AFTER DISTANCE
-        timeToDisable = distanceToDisable / Speed;
         NetworkManager.Destroy(gameObject, timeToDisable);
         //CMD_DisableProjectile();
         //print(timeToDisable);
@@ -101,5 +97,11 @@ public class Projectile : NetworkBehaviour
         StartCoroutine(DisableProjectile());
     }
     */
+
+    [ServerCallback]
+    private void ApplyImpulse()
+    {
+        rigidB.AddForce(movementDirection * Speed, ForceMode2D.Impulse);
+    }
 
 }

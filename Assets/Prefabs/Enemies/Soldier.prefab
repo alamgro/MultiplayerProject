@@ -1705,9 +1705,9 @@ MonoBehaviour:
   syncInterval: 0.1
   baseMovementSpeed: 3
   walkingTime: 0.5
-  hp: 1
+  hp: 5
   pointsValue: 6
-  attackRangeDistance: 20
+  attackRangeDistance: 15
   attackCooldown: 1
   attackCastingDelay: 0.5
   attackOriginPoint: {fileID: 596026307}

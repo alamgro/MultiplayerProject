@@ -122,8 +122,10 @@ public class Soldier : NetworkBehaviour, IDamageable
         //print("Attack!!!");
         Projectile projectile = Instantiate(pfbProjectile, transform.localPosition, pfbProjectile.transform.rotation).GetComponent<Projectile>();
         NetworkServer.Spawn(projectile.gameObject);
+        projectile.Init(spawnPosition, LayerMask.NameToLayer(GameConstants.Layer.enemyProjectile));
+        projectile.Speed = projectileSpeed;
+        projectile.MovementDirection = vectorToPlayer.normalized;
 
-        projectile.RCP_Init(spawnPosition, vectorToPlayer.normalized, projectileSpeed, LayerMask.NameToLayer(GameConstants.Layer.enemyProjectile));
     }
 
     void IDamageable.TakeDamage(int _damage)
@@ -141,7 +143,7 @@ public class Soldier : NetworkBehaviour, IDamageable
     
     private void Die()
     {
-        Debug.Log("Died.", gameObject);
+        //Debug.Log("Died.", gameObject);
         GameManager.Instance.LevelKills += 1;
         GameManager.Instance.LevelPoints += pointsValue;
         RuntimeManager.PlayOneShot(deathAudioEvent, transform.position);

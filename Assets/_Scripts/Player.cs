@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 using FMODUnity;
 using FMOD.Studio;
+using Cinemachine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [SelectionBase]
@@ -33,7 +34,8 @@ public class Player : NetworkBehaviour, IDamageable
     private Collider2D playerCollider;
     private Animator anim;
     private float shootTimer;
-    private SyncList<Projectile> poolProjectiles = new SyncList<Projectile>();
+    private CinemachineVirtualCamera virtualCam;
+    //private SyncList<Projectile> poolProjectiles = new SyncList<Projectile>();
 
     public Transform AttackOriginPoint => attackOriginPoint;
 
@@ -42,6 +44,11 @@ public class Player : NetworkBehaviour, IDamageable
         rigidB = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<Collider2D>();
         anim = GetComponent<Animator>();
+        if (isLocalPlayer)
+        {
+            virtualCam = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
+            virtualCam.Follow = transform;
+        }
 
         shootTimer = attackCooldown;
 
@@ -143,9 +150,12 @@ public class Player : NetworkBehaviour, IDamageable
         RuntimeManager.PlayOneShot(playerAudioEvent, spawnPosition);
 
         Projectile projectile = NetworkManager.Instantiate(pfbProjectile, spawnPosition, Quaternion.identity).GetComponent<Projectile>();
-        projectile.Init(spawnPosition, _shootDirection, projectileSpeed, attackDamage, LayerMask.NameToLayer(GameConstants.Layer.ally));
-        
         NetworkServer.Spawn(projectile.gameObject); //ya le avisa a los clientes que se generen
+        projectile.Init(spawnPosition,  attackDamage, LayerMask.NameToLayer(GameConstants.Layer.ally));
+        projectile.Speed = projectileSpeed;
+        projectile.MovementDirection = _shootDirection;
+        //projectile.rigidB.AddForce(_shootDirection * projectileSpeed, ForceMode2D.Impulse);
+        
     }
 
     /*
