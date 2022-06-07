@@ -37,8 +37,6 @@ public class Soldier : NetworkBehaviour, IDamageable
         rigidB = GetComponent<Rigidbody2D>();
 
         currentMovementSpeed = baseMovementSpeed;
-
-        
     }
 
     [ServerCallback]

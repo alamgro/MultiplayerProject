@@ -23,6 +23,8 @@ public class Player : NetworkBehaviour, IDamageable
     [SerializeField] private GameObject pfbProjectile;
     [Header("SFX attributes")]
     [SerializeField] private EventReference playerAudioEvent;
+    [Header("Animation attributes")]
+    [SerializeField] private float walkAnimThreshold;
 
     #region FMOD
     EventInstance playerAudio;
@@ -70,6 +72,7 @@ public class Player : NetworkBehaviour, IDamageable
         #region MOVEMENT
         moveDirection.x = Input.GetAxisRaw(GameConstants.Key.horizontal);//Get movement X direction 
         moveDirection.x *= movementSpeed; //Apply movement speed
+        anim.SetBool(GameConstants.PlayerAnimationParameter.walking, Mathf.Abs(moveDirection.x) > walkAnimThreshold);
         //moveDirection.y = 0f;
         #endregion
 
@@ -85,10 +88,10 @@ public class Player : NetworkBehaviour, IDamageable
             if (IsGrounded())
             {
                 rigidB.AddForce(Vector2.up * jumpForce * rigidB.mass, ForceMode2D.Impulse);
-                anim.SetTrigger(GameConstants.PlayerAnimation.jump);
+                anim.SetTrigger(GameConstants.PlayerAnimationParameter.jump);
             }
         }
-        anim.SetBool(GameConstants.PlayerAnimation.grounded, IsGrounded());
+        anim.SetBool(GameConstants.PlayerAnimationParameter.grounded, IsGrounded());
         #endregion
 
         #region CROUCH
