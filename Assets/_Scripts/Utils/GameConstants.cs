@@ -11,6 +11,7 @@ public static class GameConstants
     public static class Tag
     {
         public const string player = "Player";
+        public const string virtualCamera = "VirtualCamera";
     }
 
     public static class Layer
@@ -26,6 +27,13 @@ public static class GameConstants
     {
         public const string game = "Game";
         public const string mainMenu = "MainMenu";
+
+    }
+
+    public static class PlayerAnimation
+    {
+        public const string jump = "Jump";
+        public const string grounded = "Grounded";
 
     }
 }

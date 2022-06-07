@@ -39,14 +39,18 @@ public class Player : NetworkBehaviour, IDamageable
 
     public Transform AttackOriginPoint => attackOriginPoint;
 
-    void Start()
+    private void Awake()
     {
         rigidB = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<Collider2D>();
-        anim = GetComponent<Animator>();
+        anim = GetComponentInChildren<Animator>();
+    }
+
+    void Start()
+    {
         if (isLocalPlayer)
         {
-            virtualCam = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
+            virtualCam = GameObject.FindGameObjectWithTag(GameConstants.Tag.virtualCamera).GetComponent<CinemachineVirtualCamera>();
             virtualCam.Follow = transform;
         }
 
@@ -75,16 +79,16 @@ public class Player : NetworkBehaviour, IDamageable
         #endregion
 
         #region JUMP
-        Debug.DrawRay(playerCollider.bounds.center, Vector2.down * (playerCollider.bounds.extents.y + 0.05f), Color.green);
+        Debug.DrawRay(transform.position, Vector2.down * 0.05f, Color.green);
         if (Input.GetKeyDown(KeyCode.W))
         {
-            if(Physics2D.BoxCast(playerCollider.bounds.center, new Vector2(playerCollider.bounds.size.x - 0.1f, 0.05f), 0f, Vector2.down, playerCollider.bounds.extents.y, maskIgnorePlayer) )
+            if (IsGrounded())
             {
-                //Debug.Log("Jumping");
                 rigidB.AddForce(Vector2.up * jumpForce * rigidB.mass, ForceMode2D.Impulse);
+                anim.SetTrigger(GameConstants.PlayerAnimation.jump);
             }
-            
         }
+        anim.SetBool(GameConstants.PlayerAnimation.grounded, IsGrounded());
         #endregion
 
         #region CROUCH
@@ -156,6 +160,11 @@ public class Player : NetworkBehaviour, IDamageable
         projectile.MovementDirection = _shootDirection;
         //projectile.rigidB.AddForce(_shootDirection * projectileSpeed, ForceMode2D.Impulse);
         
+    }
+
+    private bool IsGrounded()
+    {
+        return Physics2D.BoxCast(transform.position, new Vector2(playerCollider.bounds.size.x - 0.1f, 0.05f), 0f, Vector2.down, 0.05f, maskIgnorePlayer);
     }
 
     /*
