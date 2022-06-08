@@ -1713,13 +1713,13 @@ MonoBehaviour:
   attackOriginPoint: {fileID: 596026307}
   projectileSpeed: 7
   pfbProjectile: {fileID: 7302094681966353782, guid: 8b559fc7994a7884ab330aa4b26d5454, type: 3}
-  deathAudioEvent:
+  death_AudioEvent:
     Guid:
-      Data1: -597775504
-      Data2: 1335335493
-      Data3: 260045993
-      Data4: -1424650968
-    Path: event:/Enemy/EnemyDeath
+      Data1: -828562007
+      Data2: 1078666167
+      Data3: 417587093
+      Data4: -1899036330
+    Path: event:/Enemy/DemonDeath
 --- !u!50 &3723445172955294575
 Rigidbody2D:
   serializedVersion: 4

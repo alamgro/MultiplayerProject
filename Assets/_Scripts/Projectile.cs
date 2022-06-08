@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Mirror;
+using FMODUnity;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Projectile : NetworkBehaviour
@@ -9,6 +10,7 @@ public class Projectile : NetworkBehaviour
 
     [SerializeField] private float timeToDisable; //The time that will pass before disabling the object
     [SerializeField] private GameObject collisionParticle;
+    [SerializeField] private EventReference collision_AudioEvent;
     [SyncVar] private float speed;
     [SyncVar] private Vector2 movementDirection;
     private int attackDamage;
@@ -40,6 +42,8 @@ public class Projectile : NetworkBehaviour
 
         if(collisionParticle)
             NetworkServer.Spawn(Instantiate(collisionParticle, transform.position, collisionParticle.transform.rotation));
+        if(!collision_AudioEvent.IsNull)
+            RuntimeManager.PlayOneShot(collision_AudioEvent, transform.position);
         NetworkManager.Destroy(gameObject);
     }
 

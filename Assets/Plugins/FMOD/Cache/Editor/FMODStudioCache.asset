@@ -27,6 +27,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 470
+--- !u!114 &-6660527613869508890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Enemy/DemonDeath
+  m_EditorClassIdentifier: 
+  Path: event:/Enemy/DemonDeath
+  Guid:
+    Data1: -828562007
+    Data2: 1078666167
+    Data3: 417587093
+    Data4: -1899036330
+  Banks:
+  - {fileID: 8375293807891435346}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 839
+--- !u!114 &-2969278641940341559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Spells/RockCast
+  m_EditorClassIdentifier: 
+  Path: event:/Spells/RockCast
+  Guid:
+    Data1: 268777051
+    Data2: 1193892478
+    Data3: -1136815703
+    Data4: 2025335808
+  Banks:
+  - {fileID: 5521658301788855490}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 250
 --- !u!114 &-1128192858144303420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42,7 +96,7 @@ MonoBehaviour:
   Path: ../../../Amerike/6to semestre/DemonicCatastrophe/Build/Desktop/Test.bank
   Name: Test
   StudioPath: bank:/Test
-  lastModified: 637892631922847509
+  lastModified: 637902502123299535
   FileSizes:
   - Name: Desktop
     Value: 1307424
@@ -62,10 +116,10 @@ MonoBehaviour:
   Path: ../../../Amerike/6to semestre/DemonicCatastrophe/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 637892631922177355
+  lastModified: 637902502123089480
   FileSizes:
   - Name: Desktop
-    Value: 1258
+    Value: 1404
   Exists: 1
 --- !u!114 &-463161541376040148
 MonoBehaviour:
@@ -115,14 +169,44 @@ MonoBehaviour:
   EditorEvents:
   - {fileID: 8397288749075612384}
   - {fileID: -8394677561217309438}
-  - {fileID: 7498981119596296442}
+  - {fileID: 3199128027504053091}
+  - {fileID: -2969278641940341559}
+  - {fileID: 1001511989219304345}
+  - {fileID: -6660527613869508890}
   EditorParameters: []
   MasterBanks:
   - {fileID: 2641767893890671529}
   StringsBanks:
   - {fileID: -736326725319729714}
-  cacheTime: 637892631923327612
+  cacheTime: 637902502123299535
   cacheVersion: 131590
+--- !u!114 &1001511989219304345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Wizard/PlayerJump
+  m_EditorClassIdentifier: 
+  Path: event:/Wizard/PlayerJump
+  Guid:
+    Data1: -895599282
+    Data2: 1160003275
+    Data3: -124701768
+    Data4: -739684343
+  Banks:
+  - {fileID: 5521658301788855490}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 291
 --- !u!114 &2633048358054970855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,11 +242,38 @@ MonoBehaviour:
   Path: ../../../Amerike/6to semestre/DemonicCatastrophe/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 637892631922157359
+  lastModified: 637902502123079496
   FileSizes:
   - Name: Desktop
     Value: 1036
   Exists: 1
+--- !u!114 &3199128027504053091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Spells/RockSmash
+  m_EditorClassIdentifier: 
+  Path: event:/Spells/RockSmash
+  Guid:
+    Data1: -1441736505
+    Data2: 1169724653
+    Data3: 1900511395
+    Data4: -1923995600
+  Banks:
+  - {fileID: 5521658301788855490}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 60
+  Length: 1200
 --- !u!114 &5521658301788855490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,38 +289,11 @@ MonoBehaviour:
   Path: ../../../Amerike/6to semestre/DemonicCatastrophe/Build/Desktop/Hechiceros.bank
   Name: Hechiceros
   StudioPath: bank:/Hechiceros
-  lastModified: 637892631922497451
+  lastModified: 637902502123049476
   FileSizes:
   - Name: Desktop
-    Value: 9216
+    Value: 41088
   Exists: 1
---- !u!114 &7498981119596296442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Enemy/EnemyDeath
-  m_EditorClassIdentifier: 
-  Path: event:/Enemy/EnemyDeath
-  Guid:
-    Data1: -597775504
-    Data2: 1335335493
-    Data3: 260045993
-    Data4: -1424650968
-  Banks:
-  - {fileID: 8375293807891435346}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 350
 --- !u!114 &8375293807891435346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,10 +309,10 @@ MonoBehaviour:
   Path: ../../../Amerike/6to semestre/DemonicCatastrophe/Build/Desktop/Enemy.bank
   Name: Enemy
   StudioPath: bank:/Enemy
-  lastModified: 637892631923327612
+  lastModified: 637902502122729392
   FileSizes:
   - Name: Desktop
-    Value: 11168
+    Value: 23424
   Exists: 1
 --- !u!114 &8397288749075612384
 MonoBehaviour:

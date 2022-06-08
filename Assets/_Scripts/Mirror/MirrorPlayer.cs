@@ -15,7 +15,7 @@ public class MirrorPlayer : NetworkBehaviour
     private Color myColor;
     [SyncVar(hook = nameof(OnHPChange))]
     private int hp = 10;
-    SyncList<int> myList = new SyncList<int>();
+    //SyncList<int> myList = new SyncList<int>();
 
     private MirrorTransform mirrorTransform;
 
@@ -34,7 +34,7 @@ public class MirrorPlayer : NetworkBehaviour
 
         //Para este punto, las variables SyncVar ya están sincronizadas
 
-        myList.Callback += OnMyListChange;
+        //myList.Callback += OnMyListChange;
     }
 
     void Update()
@@ -65,7 +65,7 @@ public class MirrorPlayer : NetworkBehaviour
 
     private void OnDestroy()
     {
-        myList.Callback -= OnMyListChange;
+        //myList.Callback -= OnMyListChange;
     }
 
     [ServerCallback]

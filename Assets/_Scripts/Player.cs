@@ -21,14 +21,11 @@ public class Player : NetworkBehaviour, IDamageable
     [SerializeField] private float projectileSpeed;
     [SerializeField] private LayerMask maskIgnorePlayer;
     [SerializeField] private GameObject pfbProjectile;
-    [Header("SFX attributes")]
-    [SerializeField] private EventReference playerAudioEvent;
     [Header("Animation attributes")]
     [SerializeField] private float walkAnimThreshold;
-
-    #region FMOD
-    EventInstance playerAudio;
-    #endregion
+    [Header("SFX attributes")]
+    [SerializeField] private EventReference spell_AudioEvent;
+    [SerializeField] private EventReference jump_AudioEvent;
 
     private Vector2 moveDirection;
     private Vector3 shootDirection;
@@ -37,7 +34,6 @@ public class Player : NetworkBehaviour, IDamageable
     private Animator anim;
     private float shootTimer;
     private CinemachineVirtualCamera virtualCam;
-    //private SyncList<Projectile> poolProjectiles = new SyncList<Projectile>();
 
     public Transform AttackOriginPoint => attackOriginPoint;
 
@@ -89,6 +85,7 @@ public class Player : NetworkBehaviour, IDamageable
             {
                 rigidB.AddForce(Vector2.up * jumpForce * rigidB.mass, ForceMode2D.Impulse);
                 anim.SetTrigger(GameConstants.PlayerAnimationParameter.jump);
+                RuntimeManager.PlayOneShot(jump_AudioEvent, transform.position);
             }
         }
         anim.SetBool(GameConstants.PlayerAnimationParameter.grounded, IsGrounded());
@@ -104,12 +101,17 @@ public class Player : NetworkBehaviour, IDamageable
         {
             //Look at where the player is shooting, regardless of where the player is walking to
             transform.localScale = new Vector3(Mathf.Sign(shootDirection.x), transform.localScale.y, transform.localScale.z);
+
+            //Check wheather to walk forward of backwards based on the movement and shooting directing
+            anim.SetBool(GameConstants.PlayerAnimationParameter.walkBackwards, Mathf.Sign(shootDirection.x) != Mathf.Sign(moveDirection.x)); //Walk Forward
         }
         else
         {
             //Look at where the player is walking to
             if (moveDirection.x != 0f)
                 transform.localScale = new Vector3(Mathf.Sign(moveDirection.x), transform.localScale.y, transform.localScale.z);
+
+            anim.SetBool(GameConstants.PlayerAnimationParameter.walkBackwards, false); //Walk Forward
         }
         #endregion
 
@@ -154,7 +156,7 @@ public class Player : NetworkBehaviour, IDamageable
     {
         Vector3 spawnPosition = attackOriginPoint.position + (_shootDirection * 0.5f);
 
-        RuntimeManager.PlayOneShot(playerAudioEvent, spawnPosition);
+        RuntimeManager.PlayOneShot(spell_AudioEvent, spawnPosition);
 
         Projectile projectile = NetworkManager.Instantiate(pfbProjectile, spawnPosition, Quaternion.identity).GetComponent<Projectile>();
         NetworkServer.Spawn(projectile.gameObject); //ya le avisa a los clientes que se generen

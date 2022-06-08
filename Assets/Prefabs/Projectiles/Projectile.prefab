@@ -33,7 +33,7 @@ Transform:
   m_GameObject: {fileID: 7302094681966353782}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -103,6 +103,13 @@ MonoBehaviour:
   syncInterval: 0.1
   timeToDisable: 10
   collisionParticle: {fileID: 4879879608680092491, guid: 655568e04c89f364288432636fc97fe7, type: 3}
+  collision_AudioEvent:
+    Guid:
+      Data1: -1441736505
+      Data2: 1169724653
+      Data3: 1900511395
+      Data4: -1923995600
+    Path: event:/Spells/RockSmash
 --- !u!50 &8783680847313866690
 Rigidbody2D:
   serializedVersion: 4
@@ -118,7 +125,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0.6
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1

@@ -23,7 +23,7 @@ public class Soldier : NetworkBehaviour, IDamageable
     [SerializeField] private float projectileSpeed;
     [SerializeField] private GameObject pfbProjectile;
     [Header("SFX attributes")]
-    [SerializeField] private EventReference deathAudioEvent;
+    [SerializeField] private EventReference death_AudioEvent;
 
     private Rigidbody2D rigidB;
     private Vector3 vectorToPlayer;
@@ -45,13 +45,14 @@ public class Soldier : NetworkBehaviour, IDamageable
         //vectorToPlayer = playerInstances.GetComponent<Collider2D>().bounds.center - attackOriginPoint.position;
         
         rigidB.velocity = Vector3.up * rigidB.velocity.y;
+        vectorToPlayer = GetClosestPlayer();
 
         //Attack Timer
         attackCurrentCooldown -= Time.deltaTime;
         isReadyToAttack = attackCurrentCooldown <= 0f ? true : false;
 
         //if it is too far, move and get closer
-        if (vectorToPlayer.sqrMagnitude > (attackRangeDistance * attackRangeDistance))
+        if (vectorToPlayer.magnitude > attackRangeDistance)
         {
             if(!followPlayer)
                 StartCoroutine(MoveToTarget());
@@ -76,7 +77,7 @@ public class Soldier : NetworkBehaviour, IDamageable
 
     private void OnDrawGizmos()
     {
-        if (vectorToPlayer.sqrMagnitude < (attackRangeDistance * attackRangeDistance))
+        if (vectorToPlayer.magnitude < attackRangeDistance)
             Gizmos.color = Color.green;
         else
             Gizmos.color = Color.red;
@@ -102,16 +103,7 @@ public class Soldier : NetworkBehaviour, IDamageable
 
     private IEnumerator Attack()
     {
-        float distanceToPlayer = Mathf.Infinity;
-        foreach (var player in GameManager.Instance.PlayerInstances)
-        {
-            if(distanceToPlayer > Vector3.Distance(player.AttackOriginPoint.position, attackOriginPoint.position))
-            {
-                distanceToPlayer = Vector3.Distance(player.AttackOriginPoint.position, attackOriginPoint.position);
-                vectorToPlayer = player.AttackOriginPoint.position - attackOriginPoint.position;
-            }
-        }
-
+        //Debug.Log("Attack");
         attackCurrentCooldown = attackCooldown + attackCastingDelay;
         currentMovementSpeed = 0f;
         Vector3 spawnPosition = attackOriginPoint.position + (vectorToPlayer.normalized * 0.5f);
@@ -144,9 +136,25 @@ public class Soldier : NetworkBehaviour, IDamageable
         //Debug.Log("Died.", gameObject);
         GameManager.Instance.LevelKills += 1;
         GameManager.Instance.LevelPoints += pointsValue;
-        RuntimeManager.PlayOneShot(deathAudioEvent, transform.position);
+        RuntimeManager.PlayOneShot(death_AudioEvent, transform.position);
 
         NetworkManager.Destroy(gameObject);
+    }
+
+    private Vector3 GetClosestPlayer()
+    {
+        float distanceToPlayer = Mathf.Infinity;
+
+        foreach (Player player in GameManager.Instance.PlayerInstances)
+        {
+            if (distanceToPlayer > Vector3.Distance(player.AttackOriginPoint.position, attackOriginPoint.position))
+            {
+                distanceToPlayer = Vector3.Distance(player.AttackOriginPoint.position, attackOriginPoint.position);
+                return player.AttackOriginPoint.position - attackOriginPoint.position;
+            }
+        }
+
+        return Vector3.zero;
     }
 
 }

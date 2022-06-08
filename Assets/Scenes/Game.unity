@@ -322,8 +322,8 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 5
-    NearClipPlane: 0.3
-    FarClipPlane: 1000
+    NearClipPlane: 0.1
+    FarClipPlane: 100
     Dutch: 0
     LensShift: {x: 0, y: 0}
   m_Transitions:
@@ -408,7 +408,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 61746248}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.75, y: 4, z: 0}
+  m_LocalPosition: {x: 3.75, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 53951794}
@@ -1486,15 +1486,15 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 0.1
+  far clip plane: 100
   field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1013
+    m_Bits: 3061
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1605,7 +1605,7 @@ GameObject:
   - component: {fileID: 647820908}
   - component: {fileID: 647820907}
   - component: {fileID: 647820906}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: EstatuaDeHechizo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1620,7 +1620,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 647820904}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 38.07, y: 2.5, z: 1.25}
+  m_LocalPosition: {x: 38.07, y: 2.5, z: 1.75}
   m_LocalScale: {x: 2, y: 4, z: 1}
   m_Children:
   - {fileID: 1162236097}
@@ -2790,7 +2790,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1271734754}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1271734754 stripped
 Transform:
@@ -4215,7 +4215,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1271734754}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2003792505
 GameObject:
@@ -4241,7 +4241,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2003792505}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 985108146}
@@ -4472,7 +4472,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5914149860509716211, guid: a405f30d71d05c149932e3228a8e58e7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 28.75
+      value: 12.75
       objectReference: {fileID: 0}
     - target: {fileID: 5914149860509716211, guid: a405f30d71d05c149932e3228a8e58e7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4520,7 +4520,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8876254976555442889, guid: a405f30d71d05c149932e3228a8e58e7, type: 3}
       propertyPath: enemiesToSpawn.Array.size
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8876254976555442889, guid: a405f30d71d05c149932e3228a8e58e7, type: 3}
       propertyPath: enemiesToSpawn.Array.data[0].prefab
@@ -4541,7 +4541,7 @@ PrefabInstance:
     - target: {fileID: 8876254976555442889, guid: a405f30d71d05c149932e3228a8e58e7, type: 3}
       propertyPath: enemiesToSpawn.Array.data[1].transform
       value: 
-      objectReference: {fileID: 307499301}
+      objectReference: {fileID: 1270202840}
     - target: {fileID: 8876254976555442889, guid: a405f30d71d05c149932e3228a8e58e7, type: 3}
       propertyPath: enemiesToSpawn.Array.data[2].transform
       value: 

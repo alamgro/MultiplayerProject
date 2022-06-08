@@ -35,5 +35,6 @@ public static class GameConstants
         public const string jump = "Jump";
         public const string grounded = "Grounded";
         public const string walking = "Walking";
+        public const string walkBackwards = "WalkBackwards";
     }
 }
