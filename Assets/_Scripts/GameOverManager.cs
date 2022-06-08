@@ -16,9 +16,9 @@ public class GameOverManager : MonoBehaviour
 
     private void GameOver()
     {
-        print($"Enemies Killed: {GameManager.Instance.LevelKills}");
-        PlayfabManager.Instance.UpdateKills(GameManager.Instance.LevelKills);
-        PlayfabManager.Instance.UpdatePoints();
+        //print($"Enemies Killed: {GameManager.Instance.LevelKills}");
+        //PlayfabManager.Instance.UpdateKills(GameManager.Instance.LevelKills);
+        //PlayfabManager.Instance.UpdatePoints();
         SceneManager.LoadScene(GameConstants.Scene.mainMenu);
 
         //GameManager.Instance.ResetLocalStatistics();
