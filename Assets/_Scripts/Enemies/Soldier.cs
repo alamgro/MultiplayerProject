@@ -37,6 +37,11 @@ public class Soldier : NetworkBehaviour, IDamageable
         rigidB = GetComponent<Rigidbody2D>();
 
         currentMovementSpeed = baseMovementSpeed;
+
+        foreach (Player player in GameManager.Instance.PlayerInstances)
+        {
+            Debug.Log($"player found: {player.name}");
+        }
     }
 
     [ServerCallback]
@@ -46,7 +51,7 @@ public class Soldier : NetworkBehaviour, IDamageable
         
         rigidB.velocity = Vector3.up * rigidB.velocity.y;
         vectorToPlayer = GetClosestPlayer();
-
+        //Debug.Log(vectorToPlayer);
         //Attack Timer
         attackCurrentCooldown -= Time.deltaTime;
         isReadyToAttack = attackCurrentCooldown <= 0f ? true : false;
@@ -144,17 +149,20 @@ public class Soldier : NetworkBehaviour, IDamageable
     private Vector3 GetClosestPlayer()
     {
         float distanceToPlayer = Mathf.Infinity;
+        Player closestPlayer = null;
 
         foreach (Player player in GameManager.Instance.PlayerInstances)
         {
+            //Debug.Log($"player found: {player.name}");
+
             if (distanceToPlayer > Vector3.Distance(player.AttackOriginPoint.position, attackOriginPoint.position))
             {
                 distanceToPlayer = Vector3.Distance(player.AttackOriginPoint.position, attackOriginPoint.position);
-                return player.AttackOriginPoint.position - attackOriginPoint.position;
+                closestPlayer = player;
             }
         }
 
-        return Vector3.zero;
+        return closestPlayer.AttackOriginPoint.position - attackOriginPoint.position;
     }
 
 }

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
-public class GameManager : MonoBehaviour
+using Mirror;
+public class GameManager : NetworkBehaviour
 {
     #region SINGLETON
     private static GameManager _instance;
@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
 
     //public Player PlayerInstance {get => playerInstance; set => playerInstance = value;}
     public List<Player> PlayerInstances {get => playerInstances; set => playerInstances = value;}
-
     public int LevelKills { get => levelKills; set => levelKills = value; }
     public int LevelPoints { get => levelPoints; set => levelPoints = value; }
     public int TotalKills { get => totalKills; set => totalKills = value; }

@@ -50,14 +50,12 @@ public class Player : NetworkBehaviour, IDamageable
         {
             virtualCam = GameObject.FindGameObjectWithTag(GameConstants.Tag.virtualCamera).GetComponent<CinemachineVirtualCamera>();
             virtualCam.Follow = transform;
+            CMD_AddPlayerToManager(this);
+            gameObject.AddComponent(typeof(StudioListener));
         }
 
         shootTimer = attackCooldown;
 
-        GameManager.Instance.PlayerInstances.Add(this);
-
-        if (isLocalPlayer)
-            gameObject.AddComponent(typeof(StudioListener)) ;
     }
 
     
@@ -170,6 +168,12 @@ public class Player : NetworkBehaviour, IDamageable
     private bool IsGrounded()
     {
         return Physics2D.BoxCast(transform.position, new Vector2(playerCollider.bounds.size.x - 0.1f, 0.05f), 0f, Vector2.down, 0.05f, maskIgnorePlayer);
+    }
+
+    [Command]
+    private void CMD_AddPlayerToManager(Player player)
+    {
+        GameManager.Instance.PlayerInstances.Add(player);
     }
 
     /*
