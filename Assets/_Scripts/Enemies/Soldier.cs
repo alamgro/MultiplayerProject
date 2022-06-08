@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using FMODUnity;
-using FMOD.Studio;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [SelectionBase]
@@ -26,15 +25,24 @@ public class Soldier : NetworkBehaviour, IDamageable
     [SerializeField] private EventReference death_AudioEvent;
 
     private Rigidbody2D rigidB;
+    private Animator anim;
     private Vector3 vectorToPlayer;
     private float attackCurrentCooldown = 0f;
     private float currentMovementSpeed;
     private bool isReadyToAttack;
     private bool followPlayer = false;
 
-    void Start()
+    public float CurrentMovementSpeed { get => currentMovementSpeed; set => currentMovementSpeed = value; }
+    public float BaseMovementSpeed { get => baseMovementSpeed; set => baseMovementSpeed = value; }
+
+    private void Awake()
     {
         rigidB = GetComponent<Rigidbody2D>();
+        anim = GetComponentInChildren<Animator>();
+    }
+
+    void Start()
+    {
 
         currentMovementSpeed = baseMovementSpeed;
 
@@ -55,6 +63,8 @@ public class Soldier : NetworkBehaviour, IDamageable
         //Attack Timer
         attackCurrentCooldown -= Time.deltaTime;
         isReadyToAttack = attackCurrentCooldown <= 0f ? true : false;
+
+        anim.SetBool(GameConstants.DemonAnimationParameter.walking, followPlayer);
 
         //if it is too far, move and get closer
         if (vectorToPlayer.magnitude > attackRangeDistance)
@@ -101,7 +111,6 @@ public class Soldier : NetworkBehaviour, IDamageable
         followPlayer = true;
         isReadyToAttack = false;
         yield return new WaitForSecondsRealtime(walkingTime);
-        followPlayer = false;
         isReadyToAttack = true;
     }
 
@@ -111,16 +120,21 @@ public class Soldier : NetworkBehaviour, IDamageable
         //Debug.Log("Attack");
         attackCurrentCooldown = attackCooldown + attackCastingDelay;
         currentMovementSpeed = 0f;
-        Vector3 spawnPosition = attackOriginPoint.position + (vectorToPlayer.normalized * 0.5f);
+        followPlayer = false;
 
         yield return new WaitForSecondsRealtime(attackCastingDelay);
         //print("Attack!!!");
+        anim.SetTrigger(GameConstants.DemonAnimationParameter.attack);
+    }
+
+    public void SpawnProjectile()
+    {
+        Vector3 spawnPosition = attackOriginPoint.position + (vectorToPlayer.normalized * 0.5f);
         Projectile projectile = Instantiate(pfbProjectile, transform.localPosition, pfbProjectile.transform.rotation).GetComponent<Projectile>();
         NetworkServer.Spawn(projectile.gameObject);
         projectile.Init(spawnPosition, LayerMask.NameToLayer(GameConstants.Layer.enemyProjectile));
         projectile.Speed = projectileSpeed;
         projectile.MovementDirection = vectorToPlayer.normalized;
-
     }
 
     void IDamageable.TakeDamage(int _damage)

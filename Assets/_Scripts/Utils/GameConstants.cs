@@ -37,4 +37,10 @@ public static class GameConstants
         public const string walking = "Walking";
         public const string walkBackwards = "WalkBackwards";
     }
+
+    public static class DemonAnimationParameter
+    {
+        public const string attack = "Attack";
+        public const string walking = "Walking";
+    }
 }
