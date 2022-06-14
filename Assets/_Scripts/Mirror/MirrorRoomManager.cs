@@ -16,8 +16,11 @@ using Mirror;
 /// It requires that the NetworkRoomPlayer component be on the room player objects.
 /// NetworkRoomManager is derived from NetworkManager, and so it implements many of the virtual functions provided by the NetworkManager class.
 /// </summary>
-public class NewNetworkRoomManager : NetworkRoomManager
+public class MirrorRoomManager : Mirror.NetworkRoomManager
 {
+    [SerializeField] private GameObject panelConnection;
+    [SerializeField] private GameObject panelLobby;
+
     #region Server Callbacks
 
     /// <summary>
@@ -127,7 +130,9 @@ public class NewNetworkRoomManager : NetworkRoomManager
     /// <summary>
     /// This is a hook to allow custom behaviour when the game client enters the room.
     /// </summary>
-    public override void OnRoomClientEnter() { }
+    public override void OnRoomClientEnter() 
+    {
+    }
 
     /// <summary>
     /// This is a hook to allow custom behaviour when the game client exits the room.
@@ -137,12 +142,24 @@ public class NewNetworkRoomManager : NetworkRoomManager
     /// <summary>
     /// This is called on the client when it connects to server.
     /// </summary>
-    public override void OnRoomClientConnect() { }
+    public override void OnRoomClientConnect() 
+    {
+        if (!panelConnection) return;
+
+        panelConnection.SetActive(false);
+        panelLobby.SetActive(true);
+    }
 
     /// <summary>
     /// This is called on the client when disconnected from a server.
     /// </summary>
-    public override void OnRoomClientDisconnect() { }
+    public override void OnRoomClientDisconnect() 
+    {
+        if (!panelConnection) return;
+
+        panelConnection.SetActive(true);
+        panelLobby.SetActive(false);
+    }
 
     /// <summary>
     /// This is called on the client when a client is started.

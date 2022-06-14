@@ -1,5 +1,7 @@
 using UnityEngine;
 using Mirror;
+using UnityEngine.UI;
+using TMPro;
 
 /*
 	Documentation: https://mirror-networking.gitbook.io/docs/components/network-room-player
@@ -12,8 +14,12 @@ using Mirror;
 /// This component holds basic room player data required for the room to function.
 /// Game specific data for room players can be put in other components on the RoomPrefab or in scripts derived from NetworkRoomPlayer.
 /// </summary>
-public class NewNetworkRoomPlayer : NetworkRoomPlayer
+public class MirrorRoomPlayer : Mirror.NetworkRoomPlayer
 {
+    [SerializeField] private GameObject pfbRoomPlayer;
+    private GameObject roomPlayer;
+    private Toggle readyToggle;
+
     #region Start & Stop Callbacks
 
     /// <summary>
@@ -33,13 +39,37 @@ public class NewNetworkRoomPlayer : NetworkRoomPlayer
     /// Called on every NetworkBehaviour when it is activated on a client.
     /// <para>Objects on the host have this function called, as there is a local client on the host. The values of SyncVars on object are guaranteed to be initialized correctly with the latest state from the server when this function is called on the client.</para>
     /// </summary>
-    public override void OnStartClient() { }
+    public override void OnStartClient() //Syncvars ya están sincronizadas aquí
+    {
+        Transform panelPlayersOnline = GameObject.FindGameObjectWithTag(GameConstants.Tag.panelPlayersOnline).transform;
+        roomPlayer = Instantiate(pfbRoomPlayer, panelPlayersOnline);
+
+        readyToggle = roomPlayer.GetComponentInChildren<Toggle>();
+        readyToggle.interactable = isLocalPlayer; //Solo puedo interactuar con el toggle que me pertenece como localPlayer
+        if (isLocalPlayer)
+        {
+            gameObject.name += "(local)";
+            readyToggle.onValueChanged.AddListener(ToggleReadyPressed);
+        }
+
+        roomPlayer.GetComponentInChildren<TextMeshProUGUI>().SetText($"Jugador {index}");
+        readyToggle.isOn = readyToBegin;
+    }
+
+    private void ToggleReadyPressed(bool _v)
+    {
+        CmdChangeReadyState(_v);
+    }
 
     /// <summary>
     /// This is invoked on clients when the server has caused this object to be destroyed.
     /// <para>This can be used as a hook to invoke effects or do client specific cleanup.</para>
     /// </summary>
-    public override void OnStopClient() { }
+    public override void OnStopClient() 
+    {
+        if(roomPlayer)
+            Destroy(roomPlayer);
+    }
 
     /// <summary>
     /// Called when the local player object has been set up.
@@ -68,12 +98,17 @@ public class NewNetworkRoomPlayer : NetworkRoomPlayer
     /// This is a hook that is invoked on all player objects when entering the room.
     /// <para>Note: isLocalPlayer is not guaranteed to be set until OnStartLocalPlayer is called.</para>
     /// </summary>
-    public override void OnClientEnterRoom() { }
+    public override void OnClientEnterRoom() //Las Syncvars aún NO están sincronizadas 
+    {
+        
+    }
 
     /// <summary>
     /// This is a hook that is invoked on all player objects when exiting the room.
     /// </summary>
-    public override void OnClientExitRoom() { }
+    public override void OnClientExitRoom() 
+    {
+    }
 
     #endregion
 
@@ -84,7 +119,11 @@ public class NewNetworkRoomPlayer : NetworkRoomPlayer
     /// </summary>
     /// <param name="oldIndex">The old index value</param>
     /// <param name="newIndex">The new index value</param>
-    public override void IndexChanged(int oldIndex, int newIndex) { }
+    public override void IndexChanged(int oldIndex, int newIndex) 
+    {
+        if(roomPlayer != null)
+            roomPlayer.GetComponentInChildren<TextMeshProUGUI>().SetText($"Jugador {newIndex}");
+    }
 
     /// <summary>
     /// This is a hook that is invoked on clients when a RoomPlayer switches between ready or not ready.
@@ -92,7 +131,10 @@ public class NewNetworkRoomPlayer : NetworkRoomPlayer
     /// </summary>
     /// <param name="oldReadyState">The old readyState value</param>
     /// <param name="newReadyState">The new readyState value</param>
-    public override void ReadyStateChanged(bool oldReadyState, bool newReadyState) { }
+    public override void ReadyStateChanged(bool oldReadyState, bool newReadyState) 
+    {
+        readyToggle.isOn = newReadyState;
+    }
 
     #endregion
 

@@ -12,6 +12,7 @@ public static class GameConstants
     {
         public const string player = "Player";
         public const string virtualCamera = "VirtualCamera";
+        public const string panelPlayersOnline = "PanelPlayersOnline";
     }
 
     public static class Layer
