@@ -1,5 +1,10 @@
 public static class GameConstants
 {
+    public static class General
+    {
+        public const string alamServer = "Alam_";
+    }
+
     public static class Key
     {
         public const string horizontal = "Horizontal";

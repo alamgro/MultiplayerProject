@@ -145,7 +145,6 @@ public class MirrorRoomManager : Mirror.NetworkRoomManager
     public override void OnRoomClientConnect() 
     {
         if (!panelConnection) return;
-
         panelConnection.SetActive(false);
         panelLobby.SetActive(true);
     }
@@ -156,7 +155,6 @@ public class MirrorRoomManager : Mirror.NetworkRoomManager
     public override void OnRoomClientDisconnect() 
     {
         if (!panelConnection) return;
-
         panelConnection.SetActive(true);
         panelLobby.SetActive(false);
     }
